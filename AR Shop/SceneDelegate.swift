@@ -11,7 +11,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    public static weak var navigationController: UINavigationController? = nil
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -20,7 +20,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = MainTabController()
+        let navController = UINavigationController(rootViewController: MainTabController())
+        navController.navigationBar.isHidden = true
+        Self.navigationController = navController
+        
+        window?.rootViewController = navController
         window?.makeKeyAndVisible()
     }
 

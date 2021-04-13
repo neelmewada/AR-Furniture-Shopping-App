@@ -25,17 +25,27 @@ final class ProductModel {
         
     }
     
-    func loadData() {
-        
+    func loadAllProducts() {
+        let db = AppModel.shared.db
+        print("Loading products...")
+        db.collection("products").getDocuments() { querySnapshot, error in
+            if let error = error {
+                print("[Firebase Error] Error getting products: \(error.localizedDescription)")
+                return
+            }
+            for document in querySnapshot!.documents {
+                print("\(document.documentID) => \(document.data())")
+            }
+        }
     }
     
     // MARK: - Properties
     
     var products: [Product] = [
-        Product(productId: 0, productName: "Grey Chair", imageUrl: "sofa-1", price: 12.99, category: "Chair", isFavorite: false, productDescription: "A grey chair"),
-        Product(productId: 1, productName: "Red Chair", imageUrl: "sofa-2", price: 6.99, category: "Chair", isFavorite: true, productDescription: "A red chair"),
-        Product(productId: 2, productName: "Grey Stool", imageUrl: "sofa-3", price: 9.99, category: "Stool", isFavorite: false, productDescription: "A grey stool"),
-        Product(productId: 3, productName: "Grey Stool", imageUrl: "sofa-3", price: 9.99, category: "Stool", isFavorite: false, productDescription: "A grey stool"),
-        Product(productId: 4, productName: "Grey Stool", imageUrl: "sofa-3", price: 9.99, category: "Stool", isFavorite: false, productDescription: "A grey stool")
+        Product(productName: "Grey Chair", thumbnailUrl: "sofa-1", productPrice: 12.99, categories: ["Chair"], isFavorite: false, productDescription: "A grey chair"),
+        Product(productName: "Red Chair", thumbnailUrl: "sofa-2", productPrice: 6.99, categories: ["Chair"], isFavorite: true, productDescription: "A red chair"),
+        Product(productName: "Grey Stool", thumbnailUrl: "sofa-3", productPrice: 9.99, categories: ["Stool"], isFavorite: false, productDescription: "A grey stool"),
+        Product(productName: "Grey Stool", thumbnailUrl: "sofa-3", productPrice: 9.99, categories: ["Stool"], isFavorite: false, productDescription: "A grey stool"),
+        Product(productName: "Grey Stool", thumbnailUrl: "sofa-3", productPrice: 9.99, categories: ["Stool"], isFavorite: false, productDescription: "A grey stool"),
     ]
 }

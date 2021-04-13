@@ -25,4 +25,7 @@ class HomeViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .darkContent
     }
+    
+    // MARK: - Properties
+    
 }

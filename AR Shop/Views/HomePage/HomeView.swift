@@ -28,7 +28,6 @@ class HomeView: UIView {
         label.textColor = .black
         label.font = UIFont(name: "Poppins-Bold", size: 22)
         label.font = label.font.withSize(28)
-        
         return label
     }()
     

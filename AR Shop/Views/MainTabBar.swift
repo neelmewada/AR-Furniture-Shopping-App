@@ -89,7 +89,6 @@ class MainTabBar: UIView {
             itemIconView.heightAnchor.constraint(equalToConstant: 20), // Fixed height for our tab item(25pts)
             itemIconView.widthAnchor.constraint(equalToConstant: 20), // Fixed width for our tab item icon
             itemIconView.centerXAnchor.constraint(equalTo: tabBarItem.centerXAnchor),
-            //itemIconView.topAnchor.constraint(equalTo: tabBarItem.topAnchor, constant: 8), // Position menu item icon 8pts from the top of it's parent view
             itemIconView.leadingAnchor.constraint(equalTo: tabBarItem.leadingAnchor, constant: 35),
             ovalBackground.centerXAnchor.constraint(equalTo: tabBarItem.centerXAnchor, constant: 2),
             ovalBackground.widthAnchor.constraint(equalToConstant: 80),
@@ -150,20 +149,28 @@ enum MainTabItem: String, CaseIterable {
     var viewController: UIViewController {
         switch self {
         case .home:
-            return HomeViewController()
+            return templateNavigationController(rootViewController: HomeViewController())
         case .products:
-            let vc = UIViewController()
+            let vc = templateNavigationController(rootViewController: UIViewController())
             vc.view.backgroundColor = .green
             return vc
         case .search:
-            let vc = UIViewController()
+            let vc = templateNavigationController(rootViewController: UIViewController())
             vc.view.backgroundColor = .yellow
             return vc
         case .profile:
-            let vc = UIViewController()
+            let vc = templateNavigationController(rootViewController: UIViewController())
             vc.view.backgroundColor = .blue
             return vc
         }
+    }
+    
+    private func templateNavigationController(rootViewController: UIViewController) -> UIViewController {
+        return rootViewController
+        /*let nav = UINavigationController(rootViewController: rootViewController)
+        nav.navigationBar.isHidden = true
+        nav.navigationBar.barStyle = .default
+        return nav*/
     }
     
     var icon: UIImage? {

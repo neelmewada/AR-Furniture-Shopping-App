@@ -8,6 +8,8 @@
 import UIKit
 
 class ProductThumnbailColumnViewModel: ViewModel {
+    // MARK: - Lifecycle
+    
     public var product: Product? {
         didSet { updateCallback?() }
     }
@@ -23,8 +25,12 @@ class ProductThumnbailColumnViewModel: ViewModel {
     
     // MARK: - ViewModel Interface
     
+    var thumbnailUrl: String? {
+        return product?.thumbnailUrl
+    }
+    
     var productThumbnail: UIImage? {
-        return product?.image
+        return product?.thumbnailImage
     }
     
     var productName: String? {
@@ -32,6 +38,6 @@ class ProductThumnbailColumnViewModel: ViewModel {
     }
     
     var productPrice: String? {
-        return "$" + String(format: "%.2f", product?.price ?? 0.00)
+        return "$" + String(format: "%.2f", product?.productPrice ?? 0.00)
     }
 }

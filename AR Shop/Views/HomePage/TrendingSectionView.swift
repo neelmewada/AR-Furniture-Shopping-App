@@ -10,13 +10,19 @@ import UIKit
 class TrendingSectionView: UIView {
     // MARK: - Lifecycle
     
+    private var viewModel: TrendingViewModel
+    
     init() {
+        self.viewModel = TrendingViewModel()
         super.init(frame: .zero)
+        self.viewModel.setUpdateCallback(self.viewModelDidChange)
         self.configureView()
     }
     
     required init?(coder: NSCoder) {
+        self.viewModel = TrendingViewModel()
         super.init(coder: coder)
+        self.viewModel.setUpdateCallback(self.viewModelDidChange)
     }
     
     /// Use this function to make push edits & changes from this view to the viewModel
@@ -46,7 +52,11 @@ class TrendingSectionView: UIView {
     // MARK: - Actions
     
     private func onProductPressed(index: Int) {
+        print("Product selected: \(index)")
+        let productDetailVC = UIViewController()
+        productDetailVC.view = ProductDetailView(viewModel.trendingProducts[index])
         
+        SceneDelegate.navigationController?.pushViewController(productDetailVC, animated: true)
     }
     
     // MARK: - Helpers
@@ -74,9 +84,15 @@ class TrendingSectionView: UIView {
             return
         }
         
-        for i in 0..<min(ProductModel.shared.products.count, 3) {
-            let product = ProductModel.shared.products[i]
-            let productView = ProductThumnbailColumnView(ProductThumnbailColumnViewModel(product: product), indexInParent: i, tapCallback: onProductPressed)
+        let trendingProducts = viewModel.trendingProducts
+        if trendingProducts.count == 0 {
+            return
+        }
+        
+        for i in 0..<min(trendingProducts.count, 3) {
+            let product = trendingProducts[i]
+            let viewModel = ProductThumnbailColumnViewModel(product: product)
+            let productView = ProductThumnbailColumnView(viewModel, indexInParent: i, tapCallback: onProductPressed)
             productStackView.addArrangedSubview(productView)
             productView.setHeight(height: 100)
         }

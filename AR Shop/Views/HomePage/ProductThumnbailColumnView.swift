@@ -95,9 +95,16 @@ class ProductThumnbailColumnView: UIView {
     }
     
     private func configureData() {
-        thumbnailImageView.image = viewModel.productThumbnail
         productNameLabel.text = viewModel.productName
         productPriceLabel.text = viewModel.productPrice
+        
+        guard let thumbnailUrl = URL.init(string: viewModel.thumbnailUrl ?? "") else { return }
+        
+        thumbnailImageView.image = nil
+        thumbnailImageView.backgroundColor = UIColor(white: 0, alpha: 0.05)
+        thumbnailImageView.sd_setImage(with: thumbnailUrl, placeholderImage: UIImage(named: "white_square")!, options: .delayPlaceholder) { image, error, cacheType, url in
+            
+        }
     }
     
     public func setViewModel(_ viewModel: ProductThumnbailColumnViewModel) {

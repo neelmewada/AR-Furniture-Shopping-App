@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -46,9 +46,17 @@
 		56BDF67A2624580300474204 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56BDF6792624580300474204 /* Main.storyboard */; };
 		56BDF67D262477DE00474204 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BDF67C262477DE00474204 /* MainTabController.swift */; };
 		56BDF6802624A4FB00474204 /* MainTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BDF67F2624A4FA00474204 /* MainTabBar.swift */; };
+		56BDF6832625AD0A00474204 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56BDF6822625AD0A00474204 /* GoogleService-Info.plist */; };
+		56BDF69E2625B4B900474204 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BDF69D2625B4B900474204 /* AppModel.swift */; };
+		56BDF6A12625C6DC00474204 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BDF6A02625C6DC00474204 /* Events.swift */; };
+		56BDF6A42625CC2C00474204 /* TrendingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BDF6A32625CC2C00474204 /* TrendingViewModel.swift */; };
+		56BDF6A82625DE3900474204 /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BDF6A72625DE3900474204 /* ProductDetailView.swift */; };
+		56BDF6AD2625DE8500474204 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BDF6AC2625DE8500474204 /* ProductDetailViewModel.swift */; };
+		9589D5C813D3813A8BBFC861 /* Pods_AR_Shop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8C11DDD2C93E5452885D7B4 /* Pods_AR_Shop.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1AC55A09F5670FF955A2A4B4 /* Pods-AR Shop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AR Shop.release.xcconfig"; path = "Target Support Files/Pods-AR Shop/Pods-AR Shop.release.xcconfig"; sourceTree = "<group>"; };
 		5662889A2621524000595EEC /* AR Shop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AR Shop.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5662889D2621524000595EEC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5662889F2621524000595EEC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -90,6 +98,14 @@
 		56BDF6792624580300474204 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		56BDF67C262477DE00474204 /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		56BDF67F2624A4FA00474204 /* MainTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBar.swift; sourceTree = "<group>"; };
+		56BDF6822625AD0A00474204 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		56BDF69D2625B4B900474204 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		56BDF6A02625C6DC00474204 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
+		56BDF6A32625CC2C00474204 /* TrendingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingViewModel.swift; sourceTree = "<group>"; };
+		56BDF6A72625DE3900474204 /* ProductDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailView.swift; sourceTree = "<group>"; };
+		56BDF6AC2625DE8500474204 /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
+		E9F2001927BBF35BAA41A3F5 /* Pods-AR Shop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AR Shop.debug.xcconfig"; path = "Target Support Files/Pods-AR Shop/Pods-AR Shop.debug.xcconfig"; sourceTree = "<group>"; };
+		F8C11DDD2C93E5452885D7B4 /* Pods_AR_Shop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AR_Shop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,17 +113,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9589D5C813D3813A8BBFC861 /* Pods_AR_Shop.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F09CD0409A2DBA4D89863BB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E9F2001927BBF35BAA41A3F5 /* Pods-AR Shop.debug.xcconfig */,
+				1AC55A09F5670FF955A2A4B4 /* Pods-AR Shop.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		566288912621524000595EEC = {
 			isa = PBXGroup;
 			children = (
 				5662889C2621524000595EEC /* AR Shop */,
 				5662889B2621524000595EEC /* Products */,
+				3F09CD0409A2DBA4D89863BB /* Pods */,
+				DEB5283F32B201EB582D3EB2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,6 +163,7 @@
 				56BDF6792624580300474204 /* Main.storyboard */,
 				566288A82621524400595EEC /* LaunchScreen.storyboard */,
 				566288AB2621524400595EEC /* Info.plist */,
+				56BDF6822625AD0A00474204 /* GoogleService-Info.plist */,
 			);
 			path = "AR Shop";
 			sourceTree = "<group>";
@@ -144,6 +173,7 @@
 			children = (
 				566288F12621FEFD00595EEC /* Product.swift */,
 				566288F4262200C100595EEC /* ProductModel.swift */,
+				56BDF69D2625B4B900474204 /* AppModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -151,6 +181,7 @@
 		566288B42621597A00595EEC /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				56BDF6AB2625DE7600474204 /* ProductPage */,
 				566289302622CA5200595EEC /* HomePage */,
 				566288E7262180C700595EEC /* ViewModel.swift */,
 			);
@@ -160,6 +191,7 @@
 		566288B52621598700595EEC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				56BDF6A62625DE2A00474204 /* ProductPage */,
 				566288C02621635D00595EEC /* HomePage */,
 				56BDF67C262477DE00474204 /* MainTabController.swift */,
 				56BDF67F2624A4FA00474204 /* MainTabBar.swift */,
@@ -179,6 +211,7 @@
 			children = (
 				566288B826215B7E00595EEC /* Extensions.swift */,
 				566289292622C31E00595EEC /* Constants.swift */,
+				56BDF6A02625C6DC00474204 /* Events.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -226,8 +259,33 @@
 			children = (
 				566288C42621665400595EEC /* HeroSectionViewModel.swift */,
 				566289352622CBD300595EEC /* ProductThumnbailColumnViewModel.swift */,
+				56BDF6A32625CC2C00474204 /* TrendingViewModel.swift */,
 			);
 			path = HomePage;
+			sourceTree = "<group>";
+		};
+		56BDF6A62625DE2A00474204 /* ProductPage */ = {
+			isa = PBXGroup;
+			children = (
+				56BDF6A72625DE3900474204 /* ProductDetailView.swift */,
+			);
+			path = ProductPage;
+			sourceTree = "<group>";
+		};
+		56BDF6AB2625DE7600474204 /* ProductPage */ = {
+			isa = PBXGroup;
+			children = (
+				56BDF6AC2625DE8500474204 /* ProductDetailViewModel.swift */,
+			);
+			path = ProductPage;
+			sourceTree = "<group>";
+		};
+		DEB5283F32B201EB582D3EB2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F8C11DDD2C93E5452885D7B4 /* Pods_AR_Shop.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,9 +295,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 566288AE2621524400595EEC /* Build configuration list for PBXNativeTarget "AR Shop" */;
 			buildPhases = (
+				E27466040FF0798721EC1AB5 /* [CP] Check Pods Manifest.lock */,
 				566288962621524000595EEC /* Sources */,
 				566288972621524000595EEC /* Frameworks */,
 				566288982621524000595EEC /* Resources */,
+				A0ACC8B7DFB858BAE2CA735C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -306,6 +366,7 @@
 				5662890E2622B8DD00595EEC /* Poppins-ExtraBoldItalic.ttf in Resources */,
 				566289142622B8DD00595EEC /* Poppins-LightItalic.ttf in Resources */,
 				5662891B2622B8DD00595EEC /* Poppins-SemiBold.ttf in Resources */,
+				56BDF6832625AD0A00474204 /* GoogleService-Info.plist in Resources */,
 				566289272622BEE800595EEC /* Plain_Germanica.ttf in Resources */,
 				566289162622B8DD00595EEC /* Poppins-ExtraLight.ttf in Resources */,
 				566289192622B8DD00595EEC /* Poppins-BoldItalic.ttf in Resources */,
@@ -314,26 +375,73 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A0ACC8B7DFB858BAE2CA735C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AR Shop/Pods-AR Shop-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AR Shop/Pods-AR Shop-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AR Shop/Pods-AR Shop-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E27466040FF0798721EC1AB5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AR Shop-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		566288962621524000595EEC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56BDF6A12625C6DC00474204 /* Events.swift in Sources */,
 				566288A22621524000595EEC /* ViewController.swift in Sources */,
 				5662892A2622C31E00595EEC /* Constants.swift in Sources */,
 				56BDF67D262477DE00474204 /* MainTabController.swift in Sources */,
 				566289322622CB5400595EEC /* ProductThumnbailColumnView.swift in Sources */,
+				56BDF6AD2625DE8500474204 /* ProductDetailViewModel.swift in Sources */,
 				566288F22621FEFD00595EEC /* Product.swift in Sources */,
 				566288D22621766700595EEC /* TrendingSectionView.swift in Sources */,
 				5662889E2621524000595EEC /* AppDelegate.swift in Sources */,
+				56BDF6A82625DE3900474204 /* ProductDetailView.swift in Sources */,
 				566288A02621524000595EEC /* SceneDelegate.swift in Sources */,
 				566288CF262172E500595EEC /* HomeViewController.swift in Sources */,
 				566288E8262180C700595EEC /* ViewModel.swift in Sources */,
 				566288B926215B7E00595EEC /* Extensions.swift in Sources */,
 				566288C52621665400595EEC /* HeroSectionViewModel.swift in Sources */,
 				566288C22621637C00595EEC /* HeroSectionView.swift in Sources */,
+				56BDF69E2625B4B900474204 /* AppModel.swift in Sources */,
 				566288BD26215E7900595EEC /* HomeView.swift in Sources */,
 				566289362622CBD300595EEC /* ProductThumnbailColumnViewModel.swift in Sources */,
+				56BDF6A42625CC2C00474204 /* TrendingViewModel.swift in Sources */,
 				56BDF6802624A4FB00474204 /* MainTabBar.swift in Sources */,
 				566288F5262200C100595EEC /* ProductModel.swift in Sources */,
 			);
@@ -471,6 +579,7 @@
 		};
 		566288AF2621524400595EEC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E9F2001927BBF35BAA41A3F5 /* Pods-AR Shop.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -491,6 +600,7 @@
 		};
 		566288B02621524400595EEC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1AC55A09F5670FF955A2A4B4 /* Pods-AR Shop.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

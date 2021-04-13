@@ -70,15 +70,10 @@ class MainTabController: UITabBarController {
         self.selectedIndex = tab
     }
     
-    private func templateNavigationController(unselectedImage: String, selectedImage: String, rootViewController: UIViewController) -> UINavigationController {
+    private func templateNavigationController(rootViewController: UIViewController) -> UINavigationController {
         let nav = UINavigationController(rootViewController: rootViewController)
         nav.navigationBar.isHidden = true
         nav.navigationBar.barStyle = .default
-        
-        
-        
-        nav.tabBarItem.image = UIImage(named: unselectedImage)?.withRenderingMode(.alwaysOriginal)
-        nav.tabBarItem.selectedImage = UIImage(named: selectedImage)?.withRenderingMode(.alwaysOriginal)
         return nav
     }
 }
