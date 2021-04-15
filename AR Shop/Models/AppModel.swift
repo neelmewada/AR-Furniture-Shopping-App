@@ -63,7 +63,8 @@ final class AppModel {
     
     var trendingProducts: [Product] = []
     
-    var loadedProducts: [String: Product] = [String: Product]() // dictionary [productId: Product]
+    /// A run-time cache containing all the products that are loaded from the app startup
+    var loadedProducts: [String: Product] = [String: Product]() // dictionary [uuid: Product]
     
     // MARK: - Helpers
     

@@ -22,6 +22,7 @@ struct Product: Codable, Hashable, Identifiable {
     var isTrending: Bool = false
     var isFavorite: Bool = false
     var rating: Float = 0.0
+    var reviews: Int = 0
     
     var productDescription: String = ""
     

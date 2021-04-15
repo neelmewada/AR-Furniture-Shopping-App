@@ -77,7 +77,7 @@ class TrendingSectionView: UIView {
     public func configureData() {
         for i in 0..<productStackView.arrangedSubviews.count {
             let view = productStackView.arrangedSubviews[i]
-            (view as! ProductThumnbailColumnView).viewModel.product = ProductModel.shared.products[i]
+            (view as! ProductThumnbailColumnView).viewModel.product = viewModel.trendingProducts[i]
         }
         
         if productStackView.arrangedSubviews.count > 0 {
