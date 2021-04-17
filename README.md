@@ -8,9 +8,10 @@ An AR based Furniture Shopping iOS App made with UIKit and Swift. I developed th
 
 - Made with UIKit framework in Swift.
 - Completely programmatic UI. No storyboards or interface builders used.
+- Used ARKit for visualization of furniture 3D models.
 - Model-View-ViewModel (MVVM) architecture used.
 - Integrated Firebase for App backend, allowing products to be stored persistently in Cloud Firestore and retrieve them in real-time.
-- Implemented Caching for downloaded images.
+- Caching for images.
 - Built Custom UI elements from scratch.
 - Used Figma for UI/UX design
 
