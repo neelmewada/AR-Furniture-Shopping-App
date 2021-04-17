@@ -26,6 +26,4 @@ Below is a screenshot of the UI Design I implemented for the App.
 
 Below are some screenshots of work in progress app:
 
-![](https://i.ibb.co/c1WXDM2/IMG-0068.png)
 
-![](https://i.ibb.co/Yj2nghb/IMG-0069.png)
