@@ -12,5 +12,6 @@ An AR based Furniture Shopping iOS App made with UIKit and Swift. I developed th
 - Integrated Firebase for App backend, allowing products to be stored persistently in Cloud Firestore and retrieve them in real-time.
 - Implemented Caching for downloaded images.
 - Built Custom UI elements from scratch.
+- Used Figma for UI/UX design
 
 
