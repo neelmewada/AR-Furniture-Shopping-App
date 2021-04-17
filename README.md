@@ -14,6 +14,7 @@ An AR based Furniture Shopping iOS App made with UIKit and Swift. I developed th
 - Caching for images.
 - Built Custom UI elements from scratch.
 - Used Figma for UI/UX design
+- More features and updates are coming soon. (Work in progress)
 
 ## UI/UX Design
 
