@@ -17,12 +17,15 @@ class ProductDetailView: UIView {
         super.init(frame: .zero)
         self.viewModel.setUpdateCallback(self.viewModelDidChange)
         self.configureView()
+        self.viewDidChange()
     }
     
     required init?(coder: NSCoder) {
         self.viewModel = coder.decodeObject() as! ProductDetailViewModel
         super.init(coder: coder)
         self.viewModel.setUpdateCallback(self.viewModelDidChange)
+        self.configureView()
+        self.viewDidChange()
     }
     
     override func encode(with coder: NSCoder) {
@@ -33,10 +36,9 @@ class ProductDetailView: UIView {
     func viewDidChange() {
         viewModel.selectedColorIndex = 0
         viewModel.productAmount = amountStepper.value
-        print("Amt: \(viewModel.productAmount)")
     }
     
-    /// Called when the viewModel is modified/set `externally`. Use this function to update data displayed by this view
+    /// Called when the viewModel is modified/set `externally`. Use this function to update data displayed by this view.
     func viewModelDidChange() {
         configureData()
     }
@@ -44,11 +46,14 @@ class ProductDetailView: UIView {
     // MARK: - Actions
         
     @objc func arModeButtonPressed() {
-        print("AR Mode...")
+        let arViewController = ProductARViewController()
+        SceneDelegate.navigationController?.pushViewController(arViewController, animated: true)
     }
     
     @objc func addToCartButtonPressed() {
-        print("Add to cart...")
+        viewModel.addProductToCart()
+        let cartViewController = CartViewController()
+        SceneDelegate.navigationController?.pushViewController(cartViewController, animated: true)
     }
     
     // MARK: - Helpers
@@ -129,6 +134,9 @@ class ProductDetailView: UIView {
         let separator4 = addSeparator(topAnchor: reviewsNumberLabel.bottomAnchor)
         separator4.anchor(bottom: contentView.bottomAnchor, paddingBottom: 16)
         
+        addSubview(productTopBar)
+        productTopBar.anchor(top: topAnchor, left: leftAnchor, bottom: safeAreaLayoutGuide.topAnchor, right: rightAnchor, paddingBottom: -50)
+        
         configureData()
     }
     
@@ -158,6 +166,8 @@ class ProductDetailView: UIView {
     
     
     // MARK: - Properties
+    
+    private lazy var productTopBar = ProductDetailTopBar(scrollView: self.scrollView)
     
     private let scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -278,4 +288,29 @@ class ProductDetailView: UIView {
         label.sizeToFit()
         return label
     }()
+}
+
+// MARK: - ProductDetailViewController
+
+class ProductDetailViewController: UIViewController {
+    
+    init(_ product: Product) {
+        self.product = product
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.product = Product()
+        super.init(coder: coder)
+    }
+    
+    private var product: Product
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
+    
+    override func loadView() {
+        self.view = ProductDetailView(product)
+    }
 }

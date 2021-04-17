@@ -18,7 +18,7 @@ class ProductDetailViewModel: ViewModel {
         AppModel.shared.subscribeForChanges(self.modelDidChange)
     }
     
-    /// Called when the main model is changed `externally`.
+    /// Called when the main model is changed `externally`. Use it to update this viewmodel with new data.
     private func modelDidChange() {
         if let id = product.id {
             product = AppModel.shared.loadedProducts[id] ?? Product()
@@ -30,6 +30,10 @@ class ProductDetailViewModel: ViewModel {
     
     public var selectedColorIndex: Int = 0
     public var productAmount: Int = 1
+    
+    public func addProductToCart() {
+        AppModel.shared.setAmountForProductInCart(self.product, amount: self.productAmount, fireEvent: false, debugInfo: "Called from ProductDetailViewModel")
+    }
     
     var productReviewsText: String {
         return "\(product.reviews) Reviews"

@@ -53,8 +53,8 @@ class TrendingSectionView: UIView {
     
     private func onProductPressed(index: Int) {
         print("Product selected: \(index)")
-        let productDetailVC = UIViewController()
-        productDetailVC.view = ProductDetailView(viewModel.trendingProducts[index])
+        let productDetailVC = ProductDetailViewController(viewModel.trendingProducts[index])
+        //productDetailVC.view = ProductDetailView(viewModel.trendingProducts[index])
         
         SceneDelegate.navigationController?.pushViewController(productDetailVC, animated: true)
     }

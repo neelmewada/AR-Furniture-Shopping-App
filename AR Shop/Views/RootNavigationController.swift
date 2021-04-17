@@ -15,6 +15,6 @@ class RootNavigationController: UINavigationController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .darkContent
+        return topViewController?.preferredStatusBarStyle ?? .darkContent
     }
 }

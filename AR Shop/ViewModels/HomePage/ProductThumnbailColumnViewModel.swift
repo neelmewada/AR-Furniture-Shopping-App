@@ -38,6 +38,7 @@ class ProductThumnbailColumnViewModel: ViewModel {
     }
     
     var productPrice: String? {
-        return "$" + String(format: "%.2f", product?.productPrice ?? 0.00)
+        guard let product = product else { return "" }
+        return "$" + String(format: "%.2f", product.productPrice)
     }
 }

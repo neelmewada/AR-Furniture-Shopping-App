@@ -31,6 +31,15 @@ class HomeView: UIView {
         return label
     }()
     
+    private lazy var cartButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "cart"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.setTitle("", for: .normal)
+        button.addTarget(self, action: #selector(cartButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
     private let scrollView: UIScrollView = {
         let view = UIScrollView()
         view.showsHorizontalScrollIndicator = false
@@ -43,6 +52,13 @@ class HomeView: UIView {
     private let trendingView = TrendingSectionView()
     
     private let scrollContentView = UIView()
+    
+    // MARK: - Actions
+    
+    @objc func cartButtonPressed() {
+        let cartViewController = CartViewController()
+        SceneDelegate.navigationController?.pushViewController(cartViewController, animated: true)
+    }
     
     // MARK: - Helpers
     
@@ -60,7 +76,11 @@ class HomeView: UIView {
         ht.priority = UILayoutPriority(250)
         
         scrollContentView.addSubview(titleLabel)
-        titleLabel.anchor(top: scrollContentView.topAnchor, left: scrollContentView.leftAnchor, right: scrollContentView.rightAnchor, paddingTop: 10, paddingLeft: 30, paddingRight: 30)
+        titleLabel.anchor(top: scrollContentView.topAnchor, left: scrollContentView.leftAnchor, paddingTop: 10, paddingLeft: 30)
+        
+        scrollContentView.addSubview(cartButton)
+        cartButton.anchor(top: scrollView.topAnchor, right: scrollContentView.rightAnchor, paddingTop: 10, paddingRight: 30)
+        cartButton.setDimensions(height: 22, width: 22)
         
         scrollContentView.addSubview(heroSectionView)
         heroSectionView.anchor(top: titleLabel.bottomAnchor, left: scrollContentView.leftAnchor, right: scrollContentView.rightAnchor, paddingTop: 33, paddingLeft: 30, paddingRight: 30, height: 200)
