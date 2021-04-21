@@ -26,6 +26,6 @@ Below is a screenshot of the UI Design I implemented for the App.
 
 Link to a Video Demo showcasing AR feature: [Click here for Video Demo](https://youtu.be/kMHFu1VT5Xo)
 
-Below are some in-app screenshots of the MVP: (Work in progress)
+Below are some in-app screenshots of Work-In-Progress app:
 
 ![](https://i.ibb.co/cwpSNmM/AR-Shot-Screenshots-PNG.png)
