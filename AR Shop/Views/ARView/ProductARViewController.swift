@@ -101,6 +101,7 @@ class ProductARViewController: UIViewController, ARSCNViewDelegate {
         let modelScene = SCNScene(named: "art.scnassets/chair_swan.scn")!
         
         if let modelNode = modelScene.rootNode.childNode(withName: "Holder", recursively: true) {
+            
             modelNode.position = SCNVector3(hitTestResult.worldTransform.columns.3.x,
                                             hitTestResult.worldTransform.columns.3.y,// + diceNode.boundingBox.max.y / 2 * diceNode.scale.y,
                                             hitTestResult.worldTransform.columns.3.z)

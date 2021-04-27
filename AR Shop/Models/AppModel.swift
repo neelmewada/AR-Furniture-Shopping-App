@@ -40,7 +40,7 @@ final class AppModel {
         loadInitialData()
     }
     
-    /// Used to load the basic data like trending products, user settings, etc for initial use
+    /// Used to load the basic data like trending products, user data, etc on app startup
     func loadInitialData() {
         db.collection("products").whereField("isTrending", isEqualTo: true).getDocuments() { querySnapshot, error in
             if let error = error {
@@ -57,6 +57,8 @@ final class AppModel {
             
             self.subscribers.raise()
         }
+        
+        loadUserData()
     }
     
     func subscribeForChanges(_ handler: @escaping Event.EventHandler) {
@@ -71,6 +73,8 @@ final class AppModel {
     var loadedProducts: [String: Product] = [String: Product]() // dictionary [productId: Product]
     
     var productsInCart: [String: CartProductInfo] = [String: CartProductInfo]() // dictionary [productId: CartProductInfo]
+    
+    var userData: UserData? = nil
     
     // MARK: - Product Methods
     
@@ -96,11 +100,12 @@ final class AppModel {
             result(product)
         }
     }
-    
-    // MARK: - Cart Methods
-    
+}
+
+// MARK: - Cart Management
+
+extension AppModel {
     func printAllProductsInCart() {
-        print("Printing \(productsInCart.count) products in cart...")
         for product in productsInCart.values {
             print("\(product.productReference.productName)")
         }
@@ -114,16 +119,15 @@ final class AppModel {
         return !productExistsInCart(productId)
     }
     
-    func addProductToCart(_ product: Product, _ amount: Int, _ colorIndex: Int = 0, fireEvent: Bool = true) {
+    private func addProductToCart(_ product: Product, _ amount: Int, _ colorIndex: Int = 0, fireEvent: Bool = true) {
         guard let productId = product.id else {
-            print("[ERROR] Product ID is nil")
+            print("[Error] Product ID is nil")
             return
         }
         if !canAddProductToCart(productId) {
-            print("[ERROR] Can't add product with id \(productId). Maybe the product already exists in cart!")
+            print("[Error] Can't add product with id \(productId). Maybe the product already exists in cart!")
             return
         }
-        print("Add Product called for \(product.productName)")
         productsInCart[productId] = CartProductInfo(id: productId, amount: amount, colorIndex: colorIndex, productReference: product)
         if fireEvent {
             subscribers.raise()
@@ -132,7 +136,7 @@ final class AppModel {
     
     func removeProductFromCart(_ product: Product, fireEvent: Bool = true) {
         guard let productId = product.id else {
-            print("[ERROR] Product ID is nil")
+            print("[Error] Product ID is nil")
             return
         }
         productsInCart.removeValue(forKey: productId)
@@ -144,13 +148,10 @@ final class AppModel {
     
     func setAmountForProductInCart(_ product: Product, amount: Int, fireEvent: Bool = true, debugInfo: String = "") {
         guard let productId = product.id else {
-            print("[ERROR] Product ID is nil")
+            print("[Error] Product ID is nil")
             return
         }
-        print("Set Amount called for \(product.productName). Amount = \(amount)")
-        if debugInfo != "" {
-            print("Debug: \(debugInfo)")
-        }
+        
         if !productExistsInCart(productId) && amount > 0 {
             addProductToCart(product, amount, fireEvent: fireEvent)
             return
@@ -164,4 +165,109 @@ final class AppModel {
             subscribers.raise()
         }
     }
+}
+
+// MARK: - User Management
+
+extension AppModel {
+    var currentUser: User? {
+        return Auth.auth().currentUser
+    }
+    
+    var isUserSignedIn: Bool {
+        return Auth.auth().currentUser != nil
+    }
+    
+    func logoutUser() {
+        let _ = try? Auth.auth().signOut()
+        userData = nil
+    }
+    
+    /// Loads user document of currently logged in user
+    func loadUserData() {
+        guard let currentUser = currentUser else { return }
+        db.collection("users").document(currentUser.uid).getDocument() { [weak self] querySnapshot, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("[Firebase Error] Error loading current user document. \(error.localizedDescription)")
+                return
+            }
+            guard let userDoc = (try? querySnapshot?.data(as: UserData.self)) else {
+                print("[Error in loadUserData()] Error converting JSON data into UserData struct.")
+                return
+            }
+            self.userData = userDoc
+            self.subscribers.raise()
+        }
+    }
+    
+    func loginUser(email: String, password: String, completion: ((Error?) -> ())?) {
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("[Firebase Error] Failed to login user. \(error.localizedDescription)")
+                completion?(error)
+                return
+            }
+            guard let authResult = authResult else { return }
+            
+            self.db.collection("users").document(authResult.user.uid).getDocument() { [weak self] querySnapshot, error in
+                guard let self = self else { return }
+                
+                if let error = error {
+                    print("[Firebase Error] Error getting user document. \(error.localizedDescription)")
+                    completion?(error)
+                    return
+                }
+                guard let userDoc = (try? querySnapshot?.data(as: UserData.self)) else {
+                    print("[Error in loginUser()] Error converting JSON data into UserData struct.")
+                    completion?(CustomError.jsonError)
+                    return
+                }
+                self.userData = userDoc
+                completion?(nil)
+            }
+        }
+    }
+    
+    func registerUser(email: String, fullname: String, password: String, completion: ((Error?) -> ())?) {
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("[Firebase Error] Failed to create user. \(error.localizedDescription)")
+                completion?(error)
+                return
+            }
+            guard let authResult = authResult else { return }
+            
+            let changeRequest = authResult.user.createProfileChangeRequest()
+            changeRequest.displayName = fullname
+            changeRequest.commitChanges { error in
+                completion?(nil)
+                guard let error = error else { return }
+                print("[Firebase Error] Couldn't commit user's displayName to FirebaseAuth. \(error.localizedDescription)")
+            }
+            
+            self.db.collection("users").document(authResult.user.uid).setData([
+                "favorites": [String](),
+                "gender": "male",
+                "phone": "",
+                "country": ""
+            ]) { error in
+                if let error = error {
+                    print("[Firebase Error] Couldn't create a user document. \(error.localizedDescription)")
+                    return
+                }
+                
+                self.userData = UserData(id: authResult.user.uid, gender: "male", favorites: [], phone: "", country: "")
+                self.subscribers.raise()
+            }
+        }
+    }
+}
+
+enum CustomError: Error {
+    case jsonError
 }

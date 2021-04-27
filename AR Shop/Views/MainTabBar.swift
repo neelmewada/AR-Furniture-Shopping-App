@@ -152,25 +152,23 @@ enum MainTabItem: String, CaseIterable {
             return templateNavigationController(rootViewController: HomeViewController())
         case .products:
             let vc = templateNavigationController(rootViewController: UIViewController())
-            vc.view.backgroundColor = .green
+            let field = UITextField(frame: CGRect(x: 10, y: 10, width: 250, height: 50))
+            vc.view.addSubview(field)
+            field.borderStyle = .roundedRect
+            field.anchor(top: vc.view.topAnchor, left: vc.view.leftAnchor, right: vc.view.rightAnchor, paddingTop: 100, paddingLeft: 30, paddingRight: 30, height: 100)
+            vc.view.backgroundColor = .white
             return vc
         case .search:
             let vc = templateNavigationController(rootViewController: UIViewController())
             vc.view.backgroundColor = .yellow
             return vc
         case .profile:
-            let vc = templateNavigationController(rootViewController: UIViewController())
-            vc.view.backgroundColor = .blue
-            return vc
+            return templateNavigationController(rootViewController: ProfileViewController())
         }
     }
     
     private func templateNavigationController(rootViewController: UIViewController) -> UIViewController {
         return rootViewController
-        /*let nav = UINavigationController(rootViewController: rootViewController)
-        nav.navigationBar.isHidden = true
-        nav.navigationBar.barStyle = .default
-        return nav*/
     }
     
     var icon: UIImage? {
@@ -182,7 +180,7 @@ enum MainTabItem: String, CaseIterable {
         case .search:
             return UIImage(named: "product_black")
         case .profile:
-            return UIImage(named: "product_black")
+            return UIImage(named: "user_black")
         }
     }
     
@@ -195,7 +193,7 @@ enum MainTabItem: String, CaseIterable {
         case .search:
             return UIImage(named: "product_white")
         case .profile:
-            return UIImage(named: "product_white")
+            return UIImage(named: "user_white")
         }
     }
     

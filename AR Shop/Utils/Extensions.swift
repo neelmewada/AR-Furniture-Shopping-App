@@ -7,6 +7,37 @@
 
 import UIKit
 
+// MARK: - UIButton
+extension UIButton {
+    func attributedTitle(firstPart: String, secondPart: String) {
+        let atts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.fromHex("353636"), .font: UIFont(name: "Poppins-SemiBold", size: 13)!]
+        let attributedTitle = NSMutableAttributedString(string: firstPart, attributes: atts)
+        
+        let boldAtts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.black, .font: UIFont(name: "Poppins-SemiBold", size: 13)!, .underlineStyle: NSUnderlineStyle.thick]
+        attributedTitle.append(NSAttributedString(string: secondPart, attributes: boldAtts))
+        
+        setAttributedTitle(attributedTitle, for: .normal)
+    }
+    
+    private func image(withColor color: UIColor) -> UIImage? {
+        let rect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        
+        context?.setFillColor(color.cgColor)
+        context?.fill(rect)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+    
+    func setBackgroundColor(_ color: UIColor, for state: UIControl.State) {
+        self.setBackgroundImage(image(withColor: color), for: state)
+    }
+}
+
 // MARK: - UIView
 extension UIView {
     /// Sets up all the constraints with the corresponding supplied anchors (non-nil values) and paddings
@@ -151,4 +182,54 @@ extension UIColor {
     }
 }
 
+// MARK: - String
+
+extension String {
+    
+    var isValidEmail: Bool {
+        let regularExpressionForEmail = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let testEmail = NSPredicate(format:"SELF MATCHES %@", regularExpressionForEmail)
+        return testEmail.evaluate(with: self)
+    }
+    
+    var isValidPhone: Bool {
+        let regularExpressionForPhone = "^\\d{10}$"
+        let testPhone = NSPredicate(format:"SELF MATCHES %@", regularExpressionForPhone)
+        return testPhone.evaluate(with: self)
+    }
+    
+    var isValidPassword: Bool {
+        let passwordPattern =
+            // At least 6 characters
+            #"(?=.{6,})"#/* +
+            
+            // At least one capital letter
+            #"(?=.*[A-Z])"# +
+            
+            // At least one lowercase letter
+            #"(?=.*[a-z])"# +
+            
+            // At least one digit
+            #"(?=.*\d)"#*/
+        
+        let result = self.range(of: passwordPattern, options: .regularExpression)
+        return result != nil
+    }
+}
+
+// MARK: - UIStackView
+
+extension UIStackView {
+    
+    static func hstack(count: Int, spacing: CGFloat = 10, viewHandler: (Int) -> UIView) -> UIStackView {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = spacing
+        for i in 0..<count {
+            stack.addArrangedSubview(viewHandler(i))
+        }
+        return stack
+    }
+    
+}
 

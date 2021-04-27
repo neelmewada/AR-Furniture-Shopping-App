@@ -57,7 +57,7 @@ class HomeView: UIView {
     
     @objc func cartButtonPressed() {
         let cartViewController = CartViewController()
-        SceneDelegate.navigationController?.pushViewController(cartViewController, animated: true)
+        AppRuntime.navigationController?.pushViewController(cartViewController, animated: true)
     }
     
     // MARK: - Helpers

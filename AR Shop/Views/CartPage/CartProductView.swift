@@ -34,6 +34,8 @@ class CartProductView: UIView {
     func viewDidChange() {
         viewModel.productAmount = amountStepperView.value
         viewModel.publishProductAmount()
+        
+        self.amountChangeCallback?()
     }
     
     /// Called when the viewModel is modified/set `externally`. Use this function to update data displayed by this view.
@@ -83,11 +85,17 @@ class CartProductView: UIView {
         return button
     }()
     
+    private var amountChangeCallback: (() -> ())?
+    
     // MARK: - Actions
     
     @objc func deleteButtonPressed() {
         viewModel.removeProductFromCart()
         self.removeFromSuperview()
+    }
+    
+    func setAmountChangeCallback(_ callback: @escaping () -> ()) {
+        self.amountChangeCallback = callback
     }
     
     // MARK: - Helpers

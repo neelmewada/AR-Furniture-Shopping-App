@@ -56,7 +56,7 @@ class TrendingSectionView: UIView {
         let productDetailVC = ProductDetailViewController(viewModel.trendingProducts[index])
         //productDetailVC.view = ProductDetailView(viewModel.trendingProducts[index])
         
-        SceneDelegate.navigationController?.pushViewController(productDetailVC, animated: true)
+        AppRuntime.navigationController?.pushViewController(productDetailVC, animated: true)
     }
     
     // MARK: - Helpers

@@ -30,40 +30,6 @@ class CustomButton: UIButton {
         handler?()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        guard let touch = touches.first else { return }
-        
-        let position = touch.location(in: self)
-        let touchedView = hitTest(position, with: event)
-        if touchedView == self {
-            setTouchState(true)
-        }
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesMoved(touches, with: event)
-        
-        guard let touch = touches.first else { return }
-        let position = touch.location(in: self)
-        let touchedView = hitTest(position, with: event)
-        if touchedView == self {
-            setTouchState(true)
-        } else {
-            setTouchState(false)
-        }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesEnded(touches, with: event)
-        
-        setTouchState(false)
-    }
-    
-    private func setTouchState(_ touched: Bool) {
-        
-    }
-    
     // MARK: - Helpers
     
     private func configureView() {
