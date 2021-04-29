@@ -11,6 +11,7 @@ An AR based **Furniture eCommerce** iOS App made with UIKit and Swift. I develop
 - Used ARKit and SceneKit for visualization of furniture 3D models.
 - Model-View-ViewModel (MVVM) architecture.
 - Integrated Firebase for App backend, allowing products to be stored persistently and perform queries in real-time.
+- User Authentication and Management.
 - Caching for images, products, etc.
 - Built Custom UI elements from scratch.
 - Used Figma for UI/UX design
