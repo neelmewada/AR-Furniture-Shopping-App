@@ -44,9 +44,9 @@ class ProductDetailView: UIView {
     }
     
     // MARK: - Actions
-        
+    
     @objc func arModeButtonPressed() {
-        let arViewController = ProductARViewController()
+        let arViewController = ProductARViewController(viewModel.product.id)
         AppRuntime.navigationController?.pushViewController(arViewController, animated: true)
     }
     
@@ -54,6 +54,10 @@ class ProductDetailView: UIView {
         viewModel.addProductToCart()
         let cartViewController = CartViewController()
         AppRuntime.navigationController?.pushViewController(cartViewController, animated: true)
+    }
+    
+    func favoriteChanged(_ isFavorite: Bool) {
+        viewModel.isFavorite = isFavorite
     }
     
     // MARK: - Helpers
@@ -156,6 +160,8 @@ class ProductDetailView: UIView {
         categoriesLabel.text = viewModel.categoriesText
         reviewsNumberLabel.text = viewModel.productReviewsText
         ratingsNumberPrimaryLabel.text = viewModel.productRatingText
+        productTopBar.isFavorite = viewModel.isFavorite
+        productTopBar.setFavoriteButton(hidden: !viewModel.isUserSignedIn)
         
         guard let galleryImageUrl = viewModel.galleryImageUrl else { return }
         
@@ -167,7 +173,7 @@ class ProductDetailView: UIView {
     
     // MARK: - Properties
     
-    private lazy var productTopBar = ProductDetailTopBar(scrollView: self.scrollView)
+    private lazy var productTopBar = ProductDetailTopBar(scrollView: self.scrollView, favoriteChanged)
     
     private let scrollView: UIScrollView = {
         let view = UIScrollView()

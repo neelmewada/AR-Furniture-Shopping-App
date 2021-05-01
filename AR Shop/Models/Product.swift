@@ -18,6 +18,7 @@ struct Product: Codable, Hashable, Identifiable {
     var productPrice: Float = 0.0
     var categories: [String] = []
     var colorOptions: [String] = []
+    var modelData: ModelData = ModelData()
     
     var isTrending: Bool = false
     var rating: Float = 0.0
@@ -32,11 +33,15 @@ struct Product: Codable, Hashable, Identifiable {
     var galleryImage: UIImage {
         return UIImage(named: galleryUrl) ?? UIImage()
     }
+    
+    struct ModelData: Codable, Hashable {
+        var sceneFile: String = ""
+        var textures: [String] = []
+    }
 }
 
 struct CartProductInfo: Identifiable, Hashable, Codable {
     var id: String
     var amount: Int
     var colorIndex: Int = 0
-    var productReference: Product = Product()
 }

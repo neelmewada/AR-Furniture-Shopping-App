@@ -28,15 +28,18 @@ class CartProductViewModel: ViewModel {
     // MARK: - ViewModel Interface
     
     public var productTitle: String {
-        return productCartInfo.productReference.productName
+        guard let productRef = AppModel.shared.getProductWithId(productCartInfo.id) else { return "" }
+        return productRef.productName
     }
     
     public var productThumbnailUrl: String {
-        return productCartInfo.productReference.thumbnailUrl
+        guard let productRef = AppModel.shared.getProductWithId(productCartInfo.id) else { return "" }
+        return productRef.thumbnailUrl
     }
     
     public var productPriceText: String {
-        return "$\(String(format: "%.2f", productCartInfo.productReference.productPrice))"
+        guard let productRef = AppModel.shared.getProductWithId(productCartInfo.id) else { return "$0.00" }
+        return "$\(String(format: "%.2f", productRef.productPrice))"
     }
     
     public var productAmount: Int {
@@ -47,10 +50,12 @@ class CartProductViewModel: ViewModel {
     }
     
     public func publishProductAmount() {
-        AppModel.shared.setAmountForProductInCart(productCartInfo.productReference, amount: productAmount, fireEvent: false) // disable fireEvent to avoid infinite event loop
+        guard let productRef = AppModel.shared.getProductWithId(productCartInfo.id) else { return }
+        AppModel.shared.setAmountForProductInCart(productRef, amount: productAmount, fireEvent: false) // disable fireEvent to avoid infinite event loop
     }
     
     public func removeProductFromCart() {
-        AppModel.shared.removeProductFromCart(productCartInfo.productReference, fireEvent: false)
+        guard let productRef = AppModel.shared.getProductWithId(productCartInfo.id) else { return }
+        AppModel.shared.removeProductFromCart(productRef, fireEvent: false) // disable fireEvent to avoid infinite event loop
     }
 }

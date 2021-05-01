@@ -16,6 +16,7 @@ class GenericTextField: UIView {
         titleLabel.text = title
         inputField.textContentType = contentType
         inputField.isSecureTextEntry = isSecure
+        inputField.keyboardAppearance = .light
         
         switch contentType {
         case .emailAddress:

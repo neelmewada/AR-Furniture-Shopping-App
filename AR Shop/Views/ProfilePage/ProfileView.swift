@@ -112,7 +112,7 @@ class ProfileView: UIView, ProfileViewProtocol {
         addSeparator()
         
         stackView.addArrangedSubview(ProfileViewButton(title: "My Favorites") {
-            print("My Favorites")
+            AppRuntime.pushToNavigation(FavoriteProductsViewController())
         })
         
         addSeparator()

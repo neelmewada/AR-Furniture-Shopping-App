@@ -45,7 +45,7 @@ class RegisterViewModel: ViewModel {
             return false
         }
         if !password.isValidPassword {
-            showAlertView(showAlert, title: "Weak Password", message: "The password must have at least 8 characters, 1 capital letter, 1 lowercase letter, and 1 digit.")
+            showAlertView(showAlert, title: "Weak Password", message: "The password must have at least 6 characters.")//"The password must have at least 8 characters, 1 capital letter, 1 lowercase letter, and 1 digit.")
             return false
         }
         if password != confirmPassword {

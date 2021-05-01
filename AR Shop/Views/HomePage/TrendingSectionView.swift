@@ -23,6 +23,7 @@ class TrendingSectionView: UIView {
         self.viewModel = TrendingViewModel()
         super.init(coder: coder)
         self.viewModel.setUpdateCallback(self.viewModelDidChange)
+        self.configureView()
     }
     
     /// Use this function to make push edits & changes from this view to the viewModel

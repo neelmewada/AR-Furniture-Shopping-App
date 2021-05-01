@@ -31,8 +31,17 @@ class ProductDetailViewModel: ViewModel {
     public var selectedColorIndex: Int = 0
     public var productAmount: Int = 1
     
+    public var isUserSignedIn: Bool {
+        return AppModel.shared.isUserSignedIn
+    }
+    
+    public var isFavorite: Bool {
+        get { AppModel.shared.isProductFavorite(product.id!) }
+        set { AppModel.shared.setProductAsFavorite(product.id!, favorite: newValue) }
+    }
+    
     public func addProductToCart() {
-        AppModel.shared.setAmountForProductInCart(self.product, amount: self.productAmount, fireEvent: false, debugInfo: "Called from ProductDetailViewModel")
+        AppModel.shared.setAmountForProductInCart(self.product, amount: self.productAmount, fireEvent: false)
     }
     
     var productReviewsText: String {

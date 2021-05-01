@@ -18,7 +18,10 @@ final class AppModel {
     public let db: Firestore
     public let storage: Storage
     
+    private let dataFilePath = FileManager.documentDirectoryUrl?.appendingPathComponent("AppData.plist")
+
     private var subscribers: Event = Event()
+    
     
     private static var _shared: AppModel? = nil
     
@@ -59,6 +62,8 @@ final class AppModel {
         }
         
         loadUserData()
+        loadProductsInCart()
+        downloadsCache.load()
     }
     
     func subscribeForChanges(_ handler: @escaping Event.EventHandler) {
@@ -76,8 +81,15 @@ final class AppModel {
     
     var userData: UserData? = nil
     
-    // MARK: - Product Methods
+    var favoriteProducts: [Product] = []
     
+    /// Cache containing local URLs of all downloaded files
+    var downloadsCache = Cache<String>("Downloads.plist")
+}
+
+// MARK: - Product Management
+
+extension AppModel {
     /// Gets the product with ID from cache if it's cached or fetches it from Firebase
     func getProductWithId(_ productId: String, result: @escaping (Product?) -> ()) {
         if let product = loadedProducts[productId] {
@@ -85,13 +97,13 @@ final class AppModel {
             return
         }
         
-        db.collection("products").document(productId).getDocument() { querySnapshot, error in
+        db.collection("products").document(productId).getDocument() { documentSnapshot, error in
             if let error = error {
                 print("[Firebase Error] Error getting product with id \(productId).\n \(error.localizedDescription)")
                 result(nil)
                 return
             }
-            guard let product = (try? querySnapshot?.data(as: Product.self)) else {
+            guard let product = (try? documentSnapshot?.data(as: Product.self)) else {
                 print("[Firebase Error] Error converting JSON data into Product struct.")
                 result(nil)
                 return
@@ -100,14 +112,100 @@ final class AppModel {
             result(product)
         }
     }
+    
+    func getProductWithId(_ productId: String) -> Product? {
+        return loadedProducts[productId]
+    }
+    
+    func getAllProductsWithIds(_ productIds: [String], completion: @escaping ([Product]) -> ()) {
+        db.collection("products").whereField(FieldPath.documentID(), in: productIds).getDocuments() { querySnapshot, error in
+            if let error = error {
+                print("[Firebase Error] Error fetching favorite products.\n \(error.localizedDescription)")
+                completion([])
+                return
+            }
+            guard let querySnapshot = querySnapshot else { return }
+            var products = [Product]()
+            for document in querySnapshot.documents {
+                guard let product = (try? document.data(as: Product.self)) else {
+                    print("[Error] Couldn't convert Favorite Product document with id \(document.documentID) into Product struct.")
+                    continue
+                }
+                products.append(product)
+            }
+            completion(products)
+        }
+    }
+    
+    func setProductAsFavorite(_ productId: String, favorite: Bool) {
+        guard let userData = userData else { return }
+        
+        let indexInArray = userData.favorites.firstIndex(of: productId)
+        
+        if favorite && indexInArray == nil {
+            self.userData?.favorites.append(productId)
+            getProductWithId(productId) { product in
+                if let product = product {
+                    self.favoriteProducts.append(product)
+                }
+            }
+            pushUserData()
+            subscribers.raise()
+        } else if !favorite && indexInArray != nil {
+            self.userData?.favorites.remove(at: indexInArray!)
+            if let index = favoriteProducts.firstIndex(where: { product in
+                return product.id == productId
+            }) {
+                favoriteProducts.remove(at: index)
+            }
+            pushUserData()
+            subscribers.raise()
+        }
+    }
+    
+    func isProductFavorite(_ productId: String) -> Bool {
+        guard let userData = userData else { return false }
+        return userData.favorites.contains(productId)
+    }
+    
+    func loadFavoriteProducts(fireEvent: Bool = true) {
+        guard let userData = userData else { return }
+        
+        if userData.favorites.count == 0 {
+            return
+        }
+        
+        getAllProductsWithIds(userData.favorites) { products in
+            self.favoriteProducts = products
+            if fireEvent {
+                self.subscribers.raise()
+            }
+        }
+    }
 }
 
 // MARK: - Cart Management
 
 extension AppModel {
-    func printAllProductsInCart() {
-        for product in productsInCart.values {
-            print("\(product.productReference.productName)")
+    
+    func loadProductsInCart() {
+        if let data = try? Data(contentsOf: self.dataFilePath!) {
+            let decoder = PropertyListDecoder()
+            do {
+                productsInCart = try decoder.decode([String: CartProductInfo].self, from: data)
+            } catch {
+                print("Error decoding AppData.plist. \(error)")
+            }
+        }
+    }
+    
+    func saveCartProducts() {
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(productsInCart)
+            try data.write(to: self.dataFilePath!)
+        } catch {
+            print("Error encoding AppData.plist. \(error)")
         }
     }
     
@@ -128,7 +226,10 @@ extension AppModel {
             print("[Error] Can't add product with id \(productId). Maybe the product already exists in cart!")
             return
         }
-        productsInCart[productId] = CartProductInfo(id: productId, amount: amount, colorIndex: colorIndex, productReference: product)
+        
+        productsInCart[productId] = CartProductInfo(id: productId, amount: amount, colorIndex: colorIndex)
+        saveCartProducts()
+        
         if fireEvent {
             subscribers.raise()
         }
@@ -139,7 +240,9 @@ extension AppModel {
             print("[Error] Product ID is nil")
             return
         }
+        
         productsInCart.removeValue(forKey: productId)
+        saveCartProducts()
         
         if fireEvent {
             subscribers.raise()
@@ -160,7 +263,10 @@ extension AppModel {
             removeProductFromCart(product, fireEvent: fireEvent)
             return
         }
+        
         productsInCart[productId]?.amount = amount
+        saveCartProducts()
+        
         if fireEvent {
             subscribers.raise()
         }
@@ -183,6 +289,25 @@ extension AppModel {
         userData = nil
     }
     
+    func pushUserData(completion: ((Error?) -> ())? = nil) {
+        guard let currentUser = currentUser else { return }
+        guard let userData = userData else { return }
+        
+        do {
+            try db.collection("users").document(currentUser.uid).setData(from: userData) { error in
+                if let error = error {
+                    print("[Firebase Error] Error pushing user doc to Firestore. \(error.localizedDescription)")
+                    completion?(error)
+                    return
+                }
+                completion?(nil)
+            }
+        } catch let error {
+            print("[Error] Error pushing user doc to Firestore. \(error.localizedDescription)")
+            completion?(error)
+        }
+    }
+    
     /// Loads user document of currently logged in user
     func loadUserData() {
         guard let currentUser = currentUser else { return }
@@ -197,6 +322,7 @@ extension AppModel {
                 return
             }
             self.userData = userDoc
+            self.loadFavoriteProducts()
             self.subscribers.raise()
         }
     }
@@ -226,6 +352,7 @@ extension AppModel {
                     return
                 }
                 self.userData = userDoc
+                self.loadFavoriteProducts()
                 completion?(nil)
             }
         }
@@ -254,7 +381,8 @@ extension AppModel {
                 "favorites": [String](),
                 "gender": "male",
                 "phone": "",
-                "country": ""
+                "country": "",
+                "addresses": [Address]()
             ]) { error in
                 if let error = error {
                     print("[Firebase Error] Couldn't create a user document. \(error.localizedDescription)")
@@ -262,6 +390,7 @@ extension AppModel {
                 }
                 
                 self.userData = UserData(id: authResult.user.uid, gender: "male", favorites: [], phone: "", country: "")
+                self.favoriteProducts = []
                 self.subscribers.raise()
             }
         }

@@ -17,8 +17,8 @@ class AppRuntime {
     
     public static func showYesNoAlert(title: String, message: String, options: (String, String) = ("Yes", "No"), yesHandler: ((UIAlertAction) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: options.0, style: .default, handler: yesHandler))
         alert.addAction(UIAlertAction(title: options.1, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: options.0, style: .default, handler: yesHandler))
         Self.topViewController?.present(alert, animated: true)
     }
     

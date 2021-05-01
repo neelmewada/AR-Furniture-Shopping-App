@@ -62,12 +62,40 @@ class ProfileEditView: UIView {
         return field
     }()
     
+    private let addressTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Address"
+        label.font = UIFont(name: "Poppins-SemiBold", size: 17)
+        label.textColor = .black
+        return label
+    }()
+    
+    private let addressStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 20.0
+        stack.distribution = .fillEqually
+        return stack
+    }()
+    
+    private lazy var saveButton: UIButton = {
+        let button = CustomButton()
+        button.setTitle("Save", for: .normal)
+        button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
     // MARK: - Actions
     
     @objc private func viewTapped() {
         self.endEditing(true)
         
-        print("ProfileEditViewModel values: \(viewModel.fullName) ; \(viewModel.gender.rawValue)")
+        print("ProfileEditViewModel values: \(viewModel.fullName ?? "nil") ; \(viewModel.gender.rawValue)")
+    }
+    
+    @objc private func saveButtonPressed() {
+        viewModel.pushChanges()
+        AppRuntime.popFromNavigation(animated: true)
     }
     
     // MARK: - Helpers
@@ -91,6 +119,15 @@ class ProfileEditView: UIView {
         stack1.addArrangedSubview(genderField)
         stack1.addArrangedSubview(phoneField)
         
+        addSubview(addressTitleLabel)
+        addressTitleLabel.anchor(top: stack1.bottomAnchor, left: leftAnchor, paddingTop: 25, paddingLeft: 30)
+        
+        addSubview(addressStackView)
+        addressStackView.anchor(top: addressTitleLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 20, paddingLeft: 30, paddingRight: 30)
+        
+        addSubview(saveButton)
+        saveButton.anchor(left: leftAnchor, bottom: safeAreaLayoutGuide.bottomAnchor, right: rightAnchor, paddingLeft: 30, paddingBottom: 15, paddingRight: 30, height: 54)
+        
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped)))
         
         configureData()
@@ -100,5 +137,18 @@ class ProfileEditView: UIView {
         fullnameField.text = viewModel.fullName
         genderField.selectOption(with: viewModel.gender.rawValue)
         phoneField.text = viewModel.phone
+        
+        for view in addressStackView.arrangedSubviews {
+            addressStackView.removeArrangedSubview(view)
+            //view.removeFromSuperview()
+        }
+        
+        for i in 0..<viewModel.addresses.count {
+            let addressView = ProfileAddressView(viewModel.addresses[i]) {
+                print("Edit Address at index: \(i)")
+            }
+            addressView.setHeight(height: 80)
+            addressStackView.addArrangedSubview(addressView)
+        }
     }
 }

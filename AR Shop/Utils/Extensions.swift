@@ -217,19 +217,16 @@ extension String {
     }
 }
 
-// MARK: - UIStackView
+// MARK: - FileManager
 
-extension UIStackView {
+extension FileManager {
     
-    static func hstack(count: Int, spacing: CGFloat = 10, viewHandler: (Int) -> UIView) -> UIStackView {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = spacing
-        for i in 0..<count {
-            stack.addArrangedSubview(viewHandler(i))
-        }
-        return stack
+    public static var documentDirectoryUrl: URL? {
+        return Self.default.urls(for: .documentDirectory, in: .userDomainMask).first
     }
     
+    public static func documentUrl(with path: String) -> URL? {
+        return documentDirectoryUrl?.appendingPathComponent(path)
+    }
 }
 

@@ -11,7 +11,8 @@ class ProductDetailTopBar: UIView, UIScrollViewDelegate {
     
     // MARK: - Lifecycle
     
-    init(scrollView: UIScrollView) {
+    init(scrollView: UIScrollView, _ favoriteHandler: ((Bool) -> ())? = nil) {
+        self.favoriteHandler = favoriteHandler
         self.scrollView = scrollView
         super.init(frame: .zero)
         self.configureView()
@@ -26,9 +27,11 @@ class ProductDetailTopBar: UIView, UIScrollViewDelegate {
     
     private var scrollView: UIScrollView? = nil
     
+    private var favoriteHandler: ((Bool) -> ())? = nil
+    
     private lazy var backButton: UIButton = {
         let button = UIButton()
-        button.setTitle("", for: .normal)
+        button.setTitle(nil, for: .normal)
         button.backgroundColor = .clear
         let image = UIImage(named: "left-arrow-white")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
@@ -37,10 +40,35 @@ class ProductDetailTopBar: UIView, UIScrollViewDelegate {
         return button
     }()
     
+    private lazy var favoriteButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(nil, for: .normal)
+        button.backgroundColor = .clear
+        button.isSelected = true
+        button.imageView?.contentMode = .scaleAspectFit
+        let image = UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate)
+        let selectedImage = UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysTemplate)
+        button.imageView?.tintColor = Constants.primaryRedColor
+        button.setImage(image, for: .normal)
+        button.setImage(selectedImage, for: .selected)
+        button.addTarget(self, action: #selector(favoriteButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
+    public var isFavorite: Bool {
+        get { favoriteButton.isSelected }
+        set { favoriteButton.isSelected = newValue }
+    }
+    
     // MARK: - Actions
     
-    @objc func backButtonPressed() {
+    @objc private func backButtonPressed() {
         AppRuntime.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func favoriteButtonPressed() {
+        isFavorite = !isFavorite
+        favoriteHandler?(isFavorite)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -49,6 +77,8 @@ class ProductDetailTopBar: UIView, UIScrollViewDelegate {
         
         backgroundColor = UIColor(white: 1, alpha: Math.lerpUnclamped(0, 1, t))
         backButton.imageView?.tintColor = UIColor(white: Math.lerpUnclamped(1, 0, t), alpha: 1)
+        
+        
     }
     
     // MARK: - Helpers
@@ -59,7 +89,13 @@ class ProductDetailTopBar: UIView, UIScrollViewDelegate {
         addSubview(backButton)
         backButton.anchor(left: leftAnchor, bottom: bottomAnchor, paddingLeft: 18, paddingBottom: 10, width: 24, height: 30) // icon: 12w, 20h
         
+        addSubview(favoriteButton)
+        favoriteButton.anchor(bottom: bottomAnchor, right: rightAnchor, paddingBottom: 10, paddingRight: 18, width: 30, height: 30)
+        
         scrollView?.delegate = self
     }
     
+    func setFavoriteButton(hidden: Bool) {
+        favoriteButton.isHidden = hidden
+    }
 }

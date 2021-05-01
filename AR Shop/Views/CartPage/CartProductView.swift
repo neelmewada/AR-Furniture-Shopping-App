@@ -91,7 +91,8 @@ class CartProductView: UIView {
     
     @objc func deleteButtonPressed() {
         viewModel.removeProductFromCart()
-        self.removeFromSuperview()
+        //self.removeFromSuperview()
+        self.amountChangeCallback?()
     }
     
     func setAmountChangeCallback(_ callback: @escaping () -> ()) {

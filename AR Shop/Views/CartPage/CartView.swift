@@ -99,20 +99,17 @@ class CartView: UIView {
     public func configureData() {
         for view in stackView.arrangedSubviews {
             stackView.removeArrangedSubview(view)
-            //view.removeFromSuperview()
+            view.removeFromSuperview()
         }
         
         let productsInCart = viewModel.productsInCart
-        if productsInCart.count == 0 {
-            return
-        }
         
         var subtotalAmount: Float = 0
         var shippingFee: Float = 0
         
         for prod in productsInCart {
             let productView = CartProductView(CartProductViewModel(prod))
-            subtotalAmount += Float(prod.amount) * prod.productReference.productPrice
+            subtotalAmount += Float(prod.amount) * (viewModel.getProduct(withID: prod.id)?.productPrice ?? 0.0)
             productView.setAmountChangeCallback(self.viewModelDidChange)
             stackView.addArrangedSubview(productView)
             productView.setHeight(height: 100)
@@ -121,6 +118,7 @@ class CartView: UIView {
         self.subtotalValueLabel.text = "$\(String(format: "%.2f", subtotalAmount))"
         self.shippingFeeValueLabel.text = "$\(String(format: "%.2f", shippingFee))"
         self.totalValueLabel.text = "$\(String(format: "%.2f", (subtotalAmount + shippingFee)))"
+        checkoutButton.isEnabled = productsInCart.count > 0
     }
     
     private func addSeparator(topAnchor: NSLayoutYAxisAnchor, paddingTop: CGFloat = 24) -> UIView {

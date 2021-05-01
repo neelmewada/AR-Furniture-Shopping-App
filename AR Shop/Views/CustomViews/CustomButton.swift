@@ -35,10 +35,13 @@ class CustomButton: UIButton {
     private func configureView() {
         isMultipleTouchEnabled = false
         layer.cornerRadius = 10
-        backgroundColor = .black
+        clipsToBounds = true
+        setBackgroundColor(.black, for: .normal)
+        setBackgroundColor(UIColor.black.withAlphaComponent(0.8), for: .highlighted)
+        setBackgroundColor(UIColor.black.withAlphaComponent(0.5), for: .disabled)
         titleLabel?.font = UIFont(name: "Poppins-Bold", size: 17)
         setTitleColor(.white, for: .normal)
-        setTitleColor(UIColor(white: 1, alpha: 0.65), for: .highlighted)
+        setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .disabled)
         addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
     }
     

@@ -36,10 +36,9 @@ enum Gender: String, Codable {
 }
 
 struct Address: Codable {
-    var addressLine1: String
-    var addressLine2: String?
-    var city: String
-    var state: String
-    var zip: String
+    var address: String = ""
+    var city: String = ""
+    var state: String = ""
+    var zip: String = ""
 }
 

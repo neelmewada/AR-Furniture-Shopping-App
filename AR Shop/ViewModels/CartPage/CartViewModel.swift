@@ -27,4 +27,8 @@ class CartViewModel: ViewModel {
             AppModel.shared.productsInCart.map { $0.value }
         }
     }
+    
+    func getProduct(withID: String) -> Product? {
+        return AppModel.shared.getProductWithId(withID)
+    }
 }

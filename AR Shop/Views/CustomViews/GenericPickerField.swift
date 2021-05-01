@@ -87,12 +87,13 @@ class GenericPickerField: UIView {
     
     func selectOption(with name: String, animated: Bool = true) {
         if let index = pickerView.options.firstIndex(of: name) {
-            pickerView.picker.selectRow(index, inComponent: 0, animated: animated)
+            selectOption(with: index, animated: animated)
         }
     }
     
     func selectOption(with index: Int, animated: Bool = true) {
         pickerView.picker.selectRow(index, inComponent: 0, animated: animated)
+        pickerButton.setTitle(pickerView.getSelectedItem().capitalized, for: .normal)
     }
     
     func setEditingCallback(_ callback: @escaping (String) -> ()) {
