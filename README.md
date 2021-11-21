@@ -16,12 +16,6 @@ An AR based **Furniture eCommerce** iOS App made with UIKit and Swift. I develop
 - Used Figma for UI/UX design
 - More features and updates are coming soon. (Work in progress)
 
-## UI/UX Design
-
-Below is a screenshot of the UI Design I implemented for the App.
-
-![](https://i.ibb.co/c8dvv4J/Screenshot-2021-04-14-at-10-09-49-AM.png)
-
 ## Screenshots & Video Demo
 
 Link to App UI/UX Video Demo: [App Video Demo ](https://youtu.be/mXCwo7xVwU8)
@@ -31,3 +25,9 @@ Link to a AR video demo: [AR Demo video](https://youtu.be/kMHFu1VT5Xo)
 Below are some in-app screenshots of Work-In-Progress app:
 
 ![](https://i.ibb.co/cwpSNmM/AR-Shot-Screenshots-PNG.png)
+
+## UI/UX Design
+
+Below is a screenshot of the UI Design I implemented for the App.
+
+![](https://i.ibb.co/c8dvv4J/Screenshot-2021-04-14-at-10-09-49-AM.png)
